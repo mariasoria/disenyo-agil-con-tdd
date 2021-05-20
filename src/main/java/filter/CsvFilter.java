@@ -12,7 +12,8 @@ public class CsvFilter {
         String invoice = lines.get(1);
         String[] fields = invoice.split(",");
 
-        if (fields[4].isEmpty() || fields[5].isEmpty()) {
+        if ((fields[4].isEmpty() || fields[5].isEmpty()) &&
+                (!(fields[4].isEmpty() && fields[5].isEmpty()))) {
            result.add(lines.get(1));
         }
 
