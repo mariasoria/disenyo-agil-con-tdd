@@ -12,8 +12,12 @@ public class CsvFilter {
         String[] fields = invoice.split(",");
         int ivaFieldIndex = 4;
         int igicFieldIndex = 5;
-        boolean taxFieldsAreMutuallyExclusive = (fields[ivaFieldIndex].isEmpty() || fields[igicFieldIndex].isEmpty()) &&
-                (!(fields[ivaFieldIndex].isEmpty() && fields[igicFieldIndex].isEmpty()));
+        String ivaField = fields[ivaFieldIndex];
+        String igicField = fields[igicFieldIndex];
+        String decimalRegex = "\\d+(\\.\\d+)?";
+        boolean taxFieldsAreMutuallyExclusive =
+                (ivaField.matches(decimalRegex) || igicField.matches(decimalRegex)) &&
+                (!(ivaField.matches(decimalRegex) && igicField.matches(decimalRegex)));
 
         if (taxFieldsAreMutuallyExclusive) {
            result.add(lines.get(1));
