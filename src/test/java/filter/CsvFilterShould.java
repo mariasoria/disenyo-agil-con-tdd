@@ -42,4 +42,12 @@ class CsvFilterShould {
         assertEquals(result, List.of(headerLine));
     }
 
+    @Test
+    void exclude_lines_with_both_tax_fields_populated_even_if_non_decimal(){
+        String invoiceLine = "1,02/05/2019,1000,810,XYZ,12,ACER Laptop,B76430134,";
+        List<String> result = CsvFilter.filter(List.of(headerLine, invoiceLine));
+
+        assertEquals(result, List.of(headerLine));
+    }
+
 }
