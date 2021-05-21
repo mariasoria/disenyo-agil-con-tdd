@@ -51,8 +51,8 @@ class CsvFilterShould {
     }
 
     @Test
-    void net_value_is_not_correct() {
-        String invoiceLine = "1,02/05/2019,1000,810,21,,ACER Laptop,B76430134,";
+    void exclude_lines_when_net_value_is_not_correct() {
+        String invoiceLine = "1,02/05/2019,1000,700,19,,ACER Laptop,B76430134,";
         List<String> result = CsvFilter.filter(List.of(headerLine, invoiceLine));
 
         assertEquals(result, List.of(headerLine));
