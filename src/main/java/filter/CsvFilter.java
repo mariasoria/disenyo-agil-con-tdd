@@ -14,15 +14,25 @@ public class CsvFilter {
         int netPriceIndex = 3;
         int ivaFieldIndex = 4;
         int igicFieldIndex = 5;
+        int cifFieldIndex = 7;
+        int nifFieldIndex = 8;
         String grossField = fields[grossPriceIndex];
         String netField = fields[netPriceIndex];
         String ivaField = fields[ivaFieldIndex];
         String igicField = fields[igicFieldIndex];
+        String cifField = fields[cifFieldIndex];
         String decimalRegex = "\\d+(\\.\\d+)?";
+
+        String nifField;
+        try {
+            nifField = fields[nifFieldIndex];
+        } catch(IndexOutOfBoundsException ex) {
+            nifField = "";
+        }
 
         boolean taxFieldsAreMutuallyExclusive =
                 (ivaField.matches(decimalRegex) || igicField.matches(decimalRegex)) &&
-                (ivaField.isEmpty() || igicField.isEmpty());
+                (ivaField.isEmpty() || igicField.isEmpty()) && (cifField.isEmpty() || nifField.isEmpty());
 
         if (taxFieldsAreMutuallyExclusive && isNetFieldCorrect(grossField, netField, ivaField)) {
             result.add(lines.get(1));
