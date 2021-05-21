@@ -7,6 +7,10 @@ public class CsvFilter {
 
     public static List<String> filter(List<String> lines) {
         List<String> result = new ArrayList<>();
+        boolean fileIsNotValid = lines.size() == 1;
+        if (fileIsNotValid) {
+            return result;
+        }
         result.add(lines.get(0));
         String invoice = lines.get(1);
         String[] fields = invoice.split(",");

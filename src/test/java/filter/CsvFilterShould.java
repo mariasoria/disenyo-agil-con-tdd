@@ -65,4 +65,12 @@ class CsvFilterShould {
 
         assertEquals(result, List.of(headerLine));
     }
+
+    @Test
+    void one_line_file_is_not_valid() {
+        String invoiceLine = "1,02/05/2019,1000,810,19,,ACER Laptop,B76430134,";
+        List<String> result = CsvFilter.filter(List.of(invoiceLine));
+
+        assertEquals(result, List.of());
+    }
 }
