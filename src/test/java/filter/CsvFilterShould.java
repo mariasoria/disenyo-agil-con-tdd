@@ -2,6 +2,7 @@ package filter;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,6 +71,13 @@ class CsvFilterShould {
     void one_line_file_is_not_valid() {
         String invoiceLine = "1,02/05/2019,1000,810,19,,ACER Laptop,B76430134,";
         List<String> result = CsvFilter.filter(List.of(invoiceLine));
+
+        assertEquals(result, List.of());
+    }
+
+    @Test
+    void an_empty_file_is_not_valid() {
+        List<String> result = CsvFilter.filter(new ArrayList<>());
 
         assertEquals(result, List.of());
     }

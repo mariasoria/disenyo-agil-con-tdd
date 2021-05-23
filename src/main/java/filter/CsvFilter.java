@@ -8,7 +8,8 @@ public class CsvFilter {
     public static List<String> filter(List<String> lines) {
         List<String> result = new ArrayList<>();
         boolean fileIsNotValid = lines.size() == 1;
-        if (fileIsNotValid) {
+        boolean fileIsEmpty = lines.size() == 0;
+        if (fileIsNotValid || fileIsEmpty) {
             return result;
         }
         result.add(lines.get(0));
