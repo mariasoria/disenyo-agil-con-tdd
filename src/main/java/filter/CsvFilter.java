@@ -39,7 +39,12 @@ public class CsvFilter {
                 (ivaField.matches(decimalRegex) || igicField.matches(decimalRegex)) &&
                 (ivaField.isEmpty() || igicField.isEmpty()) && (cifField.isEmpty() || nifField.isEmpty());
 
-        if (taxFieldsAreMutuallyExclusive && isNetFieldCorrect(grossField, netField, ivaField)) {
+        boolean areInvoiceNumbersRepeated = false;
+        if (lines.size() == 3) {
+            String[] secondLineFields = lines.get(2).split(",");
+            areInvoiceNumbersRepeated = fields[0].equals(secondLineFields[0]);
+        }
+        if (taxFieldsAreMutuallyExclusive && isNetFieldCorrect(grossField, netField, ivaField) && !areInvoiceNumbersRepeated) {
             result.add(lines.get(1));
         }
 

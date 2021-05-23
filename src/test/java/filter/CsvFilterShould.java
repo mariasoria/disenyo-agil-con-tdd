@@ -81,4 +81,14 @@ class CsvFilterShould {
 
         assertEquals(result, List.of());
     }
+
+    @Test
+    void exclude_repeated_lines_with_same_invoice_number_simple() {
+        String invoiceLine1 = "1,02/05/2019,1000,810,19,,ACER Laptop,B76430134,";
+        String invoiceLine2 = "1,03/05/2019,1000,810,19,,Macbook Pro,,B76543321";
+        List<String> result = CsvFilter.filter(List.of(headerLine, invoiceLine1, invoiceLine2));
+
+        assertEquals(result, List.of(headerLine));
+    }
+
 }
