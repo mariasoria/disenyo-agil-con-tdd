@@ -13,42 +13,60 @@ public class CsvFilter {
             return result;
         }
         result.add(lines.get(0));
-        String invoice = lines.get(1);
-        String[] fields = invoice.split(",");
         int grossPriceIndex = 2;
         int netPriceIndex = 3;
         int ivaFieldIndex = 4;
         int igicFieldIndex = 5;
         int cifFieldIndex = 7;
         int nifFieldIndex = 8;
-        String grossField = fields[grossPriceIndex];
-        String netField = fields[netPriceIndex];
-        String ivaField = fields[ivaFieldIndex];
-        String igicField = fields[igicFieldIndex];
-        String cifField = fields[cifFieldIndex];
-        String decimalRegex = "\\d+(\\.\\d+)?";
 
-        String nifField;
-        try {
-            nifField = fields[nifFieldIndex];
-        } catch(IndexOutOfBoundsException ex) {
-            nifField = "";
+        for(int i=1; i < lines.size(); i++) {
+            String invoice = lines.get(i);
+            String[] fields = invoice.split(",");
+            String grossField = fields[grossPriceIndex];
+            String netField = fields[netPriceIndex];
+            String ivaField = fields[ivaFieldIndex];
+            String igicField = fields[igicFieldIndex];
+            String cifField = fields[cifFieldIndex];
+            String decimalRegex = "\\d+(\\.\\d+)?";
+            String nifField;
+            try {
+                nifField = fields[nifFieldIndex];
+            } catch(IndexOutOfBoundsException ex) {
+                nifField = "";
+            }
+            boolean taxFieldsAreMutuallyExclusive =
+                    (ivaField.matches(decimalRegex) || igicField.matches(decimalRegex)) &&
+                    (ivaField.isEmpty() || igicField.isEmpty()) && (cifField.isEmpty() || nifField.isEmpty());
+
+            if (taxFieldsAreMutuallyExclusive && isNetFieldCorrect(grossField, netField, ivaField)) {
+                result.add(lines.get(i));
+            }
         }
-
-        boolean taxFieldsAreMutuallyExclusive =
-                (ivaField.matches(decimalRegex) || igicField.matches(decimalRegex)) &&
-                (ivaField.isEmpty() || igicField.isEmpty()) && (cifField.isEmpty() || nifField.isEmpty());
-
-        boolean areInvoiceNumbersRepeated = false;
-        if (lines.size() == 3) {
-            String[] secondLineFields = lines.get(2).split(",");
-            areInvoiceNumbersRepeated = fields[0].equals(secondLineFields[0]);
+        if (result.size() > 2) {
+            result = removeRepeatedInvoiceNumbersLines(result);
         }
-        if (taxFieldsAreMutuallyExclusive && isNetFieldCorrect(grossField, netField, ivaField) && !areInvoiceNumbersRepeated) {
-            result.add(lines.get(1));
-        }
-
         return result;
+    }
+
+    private static List<String> removeRepeatedInvoiceNumbersLines(List<String> csvLinesValidated) {
+        List<String> uniqueInvoiceNumberLines = new ArrayList<>();
+        List<String> ocurrencesBuffer = new ArrayList<>();
+
+        for (int fixedIndex = 0; fixedIndex < csvLinesValidated.size(); fixedIndex++) {
+            String[] linesOutterFor = csvLinesValidated.get(fixedIndex).split(",");
+            for (String s : csvLinesValidated) {
+                String[] linesInnerFor = s.split(",");
+                if (linesOutterFor[0].equals(linesInnerFor[0])) {
+                    ocurrencesBuffer.add(csvLinesValidated.get(fixedIndex));
+                }
+            }
+            if(ocurrencesBuffer.size() == 1) {
+                uniqueInvoiceNumberLines.add(ocurrencesBuffer.get(0));
+            }
+            ocurrencesBuffer = new ArrayList<>();
+        }
+        return uniqueInvoiceNumberLines;
     }
 
     private static boolean isNetFieldCorrect(String grossField, String netField, String ivaField) {
