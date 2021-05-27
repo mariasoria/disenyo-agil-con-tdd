@@ -16,7 +16,7 @@ class CsvFilterShould {
         String invoiceLine = "1,02/05/2019,1000,810,19,,ACER Laptop,B76430134,";
         List<String> result = CsvFilter.filter(List.of(headerLine, invoiceLine));
 
-        assertEquals(result, List.of(headerLine, invoiceLine));
+        assertEquals( List.of(headerLine, invoiceLine), result);
     }
 
     @Test
@@ -24,7 +24,7 @@ class CsvFilterShould {
         String invoiceLine = "1,02/05/2019,1000,810,19,8,ACER Laptop,B76430134,";
         List<String> result = CsvFilter.filter(List.of(headerLine, invoiceLine));
 
-        assertEquals(result, List.of(headerLine));
+        assertEquals(List.of(headerLine), result);
     }
 
     @Test
@@ -32,7 +32,7 @@ class CsvFilterShould {
         String invoiceLine = "1,02/05/2019,1000,810,,,ACER Laptop,B76430134,";
         List<String> result = CsvFilter.filter(List.of(headerLine, invoiceLine));
 
-        assertEquals(result, List.of(headerLine));
+        assertEquals(List.of(headerLine), result);
     }
 
     @Test
@@ -40,7 +40,7 @@ class CsvFilterShould {
         String invoiceLine = "1,02/05/2019,1000,810,XYZ,,ACER Laptop,B76430134,";
         List<String> result = CsvFilter.filter(List.of(headerLine, invoiceLine));
 
-        assertEquals(result, List.of(headerLine));
+        assertEquals(List.of(headerLine), result);
     }
 
     @Test
@@ -48,7 +48,7 @@ class CsvFilterShould {
         String invoiceLine = "1,02/05/2019,1000,810,XYZ,12,ACER Laptop,B76430134,";
         List<String> result = CsvFilter.filter(List.of(headerLine, invoiceLine));
 
-        assertEquals(result, List.of(headerLine));
+        assertEquals(List.of(headerLine), result);
     }
 
     @Test
@@ -56,7 +56,7 @@ class CsvFilterShould {
         String invoiceLine = "1,02/05/2019,1000,700,19,,ACER Laptop,B76430134,";
         List<String> result = CsvFilter.filter(List.of(headerLine, invoiceLine));
 
-        assertEquals(result, List.of(headerLine));
+        assertEquals(List.of(headerLine), result);
     }
 
     @Test
@@ -64,7 +64,7 @@ class CsvFilterShould {
         String invoiceLine = "1,02/05/2019,1000,810,19,,ACER Laptop,B76430134,B12344567";
         List<String> result = CsvFilter.filter(List.of(headerLine, invoiceLine));
 
-        assertEquals(result, List.of(headerLine));
+        assertEquals(List.of(headerLine), result);
     }
 
     @Test
@@ -72,14 +72,14 @@ class CsvFilterShould {
         String invoiceLine = "1,02/05/2019,1000,810,19,,ACER Laptop,B76430134,";
         List<String> result = CsvFilter.filter(List.of(invoiceLine));
 
-        assertEquals(result, List.of());
+        assertEquals( List.of(), result);
     }
 
     @Test
     void an_empty_file_is_not_valid() {
         List<String> result = CsvFilter.filter(new ArrayList<>());
 
-        assertEquals(result, List.of());
+        assertEquals( List.of(), result);
     }
 
     @Test
@@ -88,7 +88,7 @@ class CsvFilterShould {
         String invoiceLine2 = "1,03/05/2019,1000,810,19,,Macbook Pro,,B76543321";
         List<String> result = CsvFilter.filter(List.of(headerLine, invoiceLine1, invoiceLine2));
 
-        assertEquals(result, List.of(headerLine));
+        assertEquals(List.of(headerLine), result);
     }
 
 }
