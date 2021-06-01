@@ -29,12 +29,7 @@ public class CsvFilter {
             String igicField = fields[igicFieldIndex];
             String cifField = fields[cifFieldIndex];
             String decimalRegex = "\\d+(\\.\\d+)?";
-            String nifField;
-            try {
-                nifField = fields[nifFieldIndex];
-            } catch(IndexOutOfBoundsException ex) {
-                nifField = "";
-            }
+            String nifField = getNifField(nifFieldIndex, fields);
             boolean taxFieldsAreMutuallyExclusive =
                     (ivaField.matches(decimalRegex) || igicField.matches(decimalRegex)) &&
                     (ivaField.isEmpty() || igicField.isEmpty()) && (cifField.isEmpty() || nifField.isEmpty());
@@ -47,6 +42,16 @@ public class CsvFilter {
             result = removeRepeatedInvoiceNumbersLines(result);
         }
         return result;
+    }
+
+    private static String getNifField(int nifFieldIndex, String[] fields) {
+        String nifField;
+        try {
+            nifField = fields[nifFieldIndex];
+        } catch(IndexOutOfBoundsException ex) {
+            nifField = "";
+        }
+        return nifField;
     }
 
     private static List<String> removeRepeatedInvoiceNumbersLines(List<String> csvLinesValidated) {
