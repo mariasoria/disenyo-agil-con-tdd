@@ -1,4 +1,4 @@
-package filter;
+package csvfilter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package filter;
+package csvfilter;
 
 import java.util.List;
 
