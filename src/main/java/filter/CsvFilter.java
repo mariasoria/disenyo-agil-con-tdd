@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CsvFilter {
 
-    public static List<String> filter(List<String> lines) {
+    public List<String> apply(List<String> lines) {
         List<String> result = new ArrayList<>();
         boolean fileIsNotValid = lines.size() == 1;
         boolean fileIsEmpty = lines.size() == 0;
