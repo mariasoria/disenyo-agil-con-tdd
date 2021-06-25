@@ -101,36 +101,44 @@ class CsvFilterShould {
 
     @Test
     void one_line_file_is_not_valid() {
-        String invoiceLine = "1,02/05/2019,1000,810,19,,ACER Laptop,B76430134,";
+        String invoiceLine = builder.generateOneLine();
         List<String> result = filter.apply(List.of(invoiceLine));
-
         assertEquals( List.of(), result);
     }
 
     @Test
     void an_empty_file_is_not_valid() {
         List<String> result = filter.apply(new ArrayList<>());
-
         assertEquals( List.of(), result);
     }
 
     @Test
     void exclude_repeated_lines_with_same_invoice_number_simple() {
-        String invoiceLine1 = "1,02/05/2019,1000,810,19,,ACER Laptop,B76430134,";
-        String invoiceLine2 = "1,03/05/2019,1000,810,19,,Macbook Pro,,B76543321";
-        List<String> result = filter.apply(List.of(headerLine, invoiceLine1, invoiceLine2));
+        String invoiceLine1 = builder
+                .withInvoiceId("1")
+                .generateOneLine();
+        String invoiceLine2 = builder
+                .withInvoiceId("1")
+                .generateOneLine();
 
+        List<String> result = filter.apply(List.of(headerLine, invoiceLine1, invoiceLine2));
         assertEquals(List.of(headerLine), result);
     }
 
     @Test
     void exclude_repetead_lines_with_same_invoice_number_extended() {
-        String invoiceLine1 = "1,02/05/2019,1000,810,19,,ACER Laptop,B76430134,";
-        String invoiceLine2 = "2,05/05/2019,1000,810,19,,LENOVO Thinkpad,B77818711,";
-        String invoiceLine3 = "1,03/05/2019,1000,810,19,,Macbook Pro,B77818711,";
-        List<String> result = filter.apply(List.of(headerLine, invoiceLine1, invoiceLine2, invoiceLine3));
+        String invoiceLine1 = builder
+                .withInvoiceId("1")
+                .generateOneLine();
+        String invoiceLine2 = builder
+                .withInvoiceId("2")
+                .generateOneLine();
+        String invoiceLine3 = builder
+                .withInvoiceId("1")
+                .generateOneLine();
 
-        assertEquals( List.of(headerLine, invoiceLine2), result);
+        List<String> result = filter.apply(List.of(headerLine, invoiceLine1, invoiceLine2, invoiceLine3));
+        assertEquals(List.of(headerLine, invoiceLine2), result);
     }
 
 }
